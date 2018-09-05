@@ -2,13 +2,12 @@ import java.io.*;
 import java.util.*;
 
 /**
- * A common form of word puzzle is so-called “word chess”.
- * Starting from an English word w, and changing only one letter at a time,
- * derive a second word w’. All intermediate stages must also be valid English
+ * A common form of word puzzle is so-called "word chess".
+ * Starting from an Enlish word w, and changing only one letter at a time,
+ * derive a second word w'. All intermediate stages must also be valid Enlish
  * words.
  * So given e.g. SICK and WELL, one solution would be:
  * SICK, SILK, SILL, SELL, WELL
- *
  * @author Joshua Ng
  */
 public class WordChessImp implements WordChess
@@ -26,27 +25,86 @@ public class WordChessImp implements WordChess
      **/
     public String[] findPath(String[] dictionary, String startWord, String endWord)
     {
-        ArrayDeque stack = new ArrayDeque<Integer>();
+        ArrayDeque queue = new ArrayDeque<Integer>();
         int start = lookUp(dictionary, startWord);
-        stack.push(start);
+        int end = lookUp(dictionary, endWord);
+        queue.add(start);
         boolean[] visited = new boolean[dictionary.length];
-        
-        
-        while(stack.isEmpty() == false)
+        int[] parent = new int[dictionary.length];
+        visited[start] = true;
+        for(int i=0; i<parent.length; i++) {parent[i] = -1;}
+        boolean found = false;
+
+        while(found == false && queue.isEmpty() == false)
         {
-            int current = (int) stack.pop();
-            if( visited[current] == false ) {
-                visited[current] = true;
-                
-                return null;
+            int pop = (int) queue.pop();
+            for(int i=0; i<dictionary.length; i++) {
+                if(visited[i]==false && nextTo(dictionary, pop, i)) {
+                    parent[i] = pop;
+                    if(i == end) {
+                        found = true;
+                        break;
+                    }
+
+                    visited[i] = true;
+                    queue.add(i);
+                }
             }
         }
-        
-        return null;
+
+        int j = end;
+        String[] stages = new String[getDepth(parent, j)];
+        for(int i=0; i<stages.length; i++) {
+            stages[stages.length-1-i] = dictionary[j];
+            j = parent[j];
+        }
+        return stages;
     }
-    
-    
-    
+
+    /**
+     * getDepth finds the depth of the child to the parent
+     *
+     * @param parent A parameter
+     * @param child A parameter
+     * @return Depth number
+     */
+    public int getDepth(int[] parent, int child) {
+        int count = 0;
+        int i = child;
+        while(i != -1) {
+            count++;
+            i = parent[i];
+        }
+        return count;
+    }
+
+    /**
+     * nextTo checkes if word1 is adjacent to word2 by one letter.
+     *
+     * @param dictionary The set of words that can be used in the sequence
+     * @param word1 A parameter
+     * @param word2 A parameter
+     * @return The return value
+     */
+    public boolean nextTo(String[] dictionary, int word1, int word2) {
+        if(dictionary[word1].length() != dictionary[word2].length()) {
+            return false;
+        }
+
+        String a = dictionary[word1];
+        String b = dictionary[word2];
+        int changes=0;
+        for(int i=0; i < a.length(); i++) {
+            if(a.charAt(i) != b.charAt(i)) {
+                changes++;
+                if(changes > 1) {
+                    return false;
+                }
+            }
+        }
+        return changes==1;
+    }
+
     /**
      * lookUp does a binary seach on dictionary looking for the word. 
      *
@@ -72,20 +130,4 @@ public class WordChessImp implements WordChess
         return -1;
     }
 
-    public static void main(String args[]) throws FileNotFoundException
-    {
-        Scanner sc;
-        if(args.length != 0) {
-            File file = new File(args[0]);
-            sc = new Scanner(file);
-        } else {
-            sc = new Scanner(System.in);
-        }
-
-        int n = sc.nextInt();
-        String[] arr = new String[n];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = sc.next();
-        }
-    }
 }
