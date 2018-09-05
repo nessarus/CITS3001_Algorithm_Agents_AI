@@ -25,7 +25,22 @@ public class WordChessImp implements WordChess
      **/
     public String[] findPath(String[] dictionary, String startWord, String endWord)
     {
-        ArrayDeque queue = new ArrayDeque<Integer>();
+        ArrayDeque<Integer> queuebackup = new ArrayDeque<>();
+        Comparator comp = new Comparator<Integer>() {
+            public int compare(Integer a, Integer b)
+            {
+                int anum = numCharMatch(dictionary[(int) a], endWord);
+                int bnum = numCharMatch(dictionary[(int) b], endWord);
+                if(anum > bnum) {
+                    return -1;
+                } else if(anum < bnum) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        };
+        PriorityQueue<Integer> queue = new PriorityQueue<>(comp);
         int start = lookUp(dictionary, startWord);
         int end = lookUp(dictionary, endWord);
         queue.add(start);
@@ -37,7 +52,7 @@ public class WordChessImp implements WordChess
 
         while(found == false && queue.isEmpty() == false)
         {
-            int pop = (int) queue.pop();
+            int pop = (int) queue.poll();
             for(int i=0; i<dictionary.length; i++) {
                 if(visited[i]==false && nextTo(dictionary, pop, i)) {
                     parent[i] = pop;
@@ -45,11 +60,12 @@ public class WordChessImp implements WordChess
                         found = true;
                         break;
                     }
-
+                    
                     visited[i] = true;
-                    queue.add(i);
+                    queuebackup.add(i);
                 }
             }
+            refill(queuebackup, queue);
         }
 
         int j = end;
@@ -61,6 +77,39 @@ public class WordChessImp implements WordChess
         return stages;
     }
 
+    private int numCharMatch(String a, String b) 
+    {
+        int length;
+        if(a.length() < b.length()) {
+            length = a.length();
+        } else {
+            length = b.length();
+        }
+
+        int count = 0;
+        for(int i=0; i < length; i++) {
+            if(a.charAt(i) == b.charAt(i)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * refill makes sure the priority queue only reorders items in the added layers.
+     * After priority queue finishes a layer then queuebackup refills it up again.
+     * @param queuebackup A normal ArrayDeque queue of index words from dictionary
+     * @param queue A priority queue of index words
+     */
+    private void refill(ArrayDeque queuebackup, PriorityQueue queue) {
+        if(queue.isEmpty()) {
+            while(!queuebackup.isEmpty())
+            {
+                queue.add(queuebackup.pop());
+            }
+        }
+    }
+
     /**
      * getDepth finds the depth of the child to the parent
      *
@@ -68,7 +117,7 @@ public class WordChessImp implements WordChess
      * @param child A parameter
      * @return Depth number
      */
-    public int getDepth(int[] parent, int child) {
+    private int getDepth(int[] parent, int child) {
         int count = 0;
         int i = child;
         while(i != -1) {
@@ -86,7 +135,7 @@ public class WordChessImp implements WordChess
      * @param word2 A parameter
      * @return The return value
      */
-    public boolean nextTo(String[] dictionary, int word1, int word2) {
+    private boolean nextTo(String[] dictionary, int word1, int word2) {
         if(dictionary[word1].length() != dictionary[word2].length()) {
             return false;
         }

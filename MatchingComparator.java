@@ -1,19 +1,24 @@
+import java.lang.*;
+
 /**
  * MatchingComparator compares how closely matching a string is to a target word.
  */
-public class MatchingComparator implements Comparator<String>
+public class MatchingComparator implements Comparator<Integer>
 {
+    private String[] dictionary;
     private String target;
 
-    public MatchingComparator(String targetWord)
+    public MatchingComparator(String[] dictionary, String target)
     {
-        target = targetWord;
+        this.dictionary = dictionary;
+        this.target = target;
     }
 
-    public int compare(String a, Sting b)
+    @Override
+    public int compare(int a, int b)
     {
-        int anum = numCharMatch(a, target);
-        int bnum = numCharMatch(a, target);
+        int anum = numCharMatch(dictionary[a], target);
+        int bnum = numCharMatch(dictionary[b], target);
         if(anum > bnum) {
             return -1;
         } else if(anum < bnum) {
@@ -33,7 +38,7 @@ public class MatchingComparator implements Comparator<String>
         }
 
         int count = 0;
-        for(int i=0; i < length(); i++) {
+        for(int i=0; i < length; i++) {
             if(a.charAt(i) == b.charAt(i)) {
                 count++;
             }
