@@ -1,4 +1,5 @@
 import java.lang.*;
+import java.util.*;
 
 /**
  * MatchingComparator compares how closely matching a string is to a target word.
@@ -14,11 +15,10 @@ public class MatchingComparator implements Comparator<Integer>
         this.target = target;
     }
 
-    @Override
-    public int compare(int a, int b)
+    public int compare(Integer a, Integer b)
     {
-        int anum = numCharMatch(dictionary[a], target);
-        int bnum = numCharMatch(dictionary[b], target);
+        int anum = numCharMatch(dictionary[(int) a], target);
+        int bnum = numCharMatch(dictionary[(int) b], target);
         if(anum > bnum) {
             return -1;
         } else if(anum < bnum) {

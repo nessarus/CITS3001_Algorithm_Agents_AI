@@ -26,20 +26,7 @@ public class WordChessImp implements WordChess
     public String[] findPath(String[] dictionary, String startWord, String endWord)
     {
         ArrayDeque<Integer> queuebackup = new ArrayDeque<>();
-        Comparator comp = new Comparator<Integer>() {
-            public int compare(Integer a, Integer b)
-            {
-                int anum = numCharMatch(dictionary[(int) a], endWord);
-                int bnum = numCharMatch(dictionary[(int) b], endWord);
-                if(anum > bnum) {
-                    return -1;
-                } else if(anum < bnum) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        };
+        MatchingComparator comp = new MatchingComparator(dictionary, endWord);
         PriorityQueue<Integer> queue = new PriorityQueue<>(comp);
         int start = lookUp(dictionary, startWord);
         int end = lookUp(dictionary, endWord);
@@ -75,24 +62,6 @@ public class WordChessImp implements WordChess
             j = parent[j];
         }
         return stages;
-    }
-
-    private int numCharMatch(String a, String b) 
-    {
-        int length;
-        if(a.length() < b.length()) {
-            length = a.length();
-        } else {
-            length = b.length();
-        }
-
-        int count = 0;
-        for(int i=0; i < length; i++) {
-            if(a.charAt(i) == b.charAt(i)) {
-                count++;
-            }
-        }
-        return count;
     }
 
     /**
