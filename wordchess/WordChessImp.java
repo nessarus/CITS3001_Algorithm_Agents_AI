@@ -1,4 +1,4 @@
-import java.io.*;
+package wordchess;
 import java.util.*;
 
 /**
@@ -70,11 +70,11 @@ public class WordChessImp implements WordChess
      * @param queuebackup A normal ArrayDeque queue of index words from dictionary
      * @param queue A priority queue of index words
      */
-    private void refill(ArrayDeque queuebackup, PriorityQueue queue) {
+    private void refill(ArrayDeque<Integer> queuebackup, PriorityQueue<Integer> queue) {
         if(queue.isEmpty()) {
             while(!queuebackup.isEmpty())
             {
-                queue.add(queuebackup.pop());
+                queue.add((int) queuebackup.pop());
             }
         }
     }

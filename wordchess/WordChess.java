@@ -1,3 +1,4 @@
+package wordchess;
 /**
  * An interface to wrap the word-chess search algorithm.
  * This class is for use in CITS3001 at the University of Western Australia

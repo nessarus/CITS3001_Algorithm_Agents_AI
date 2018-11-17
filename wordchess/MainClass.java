@@ -1,3 +1,5 @@
+package wordchess;
+
 import java.io.*;
 import java.util.*;
 
@@ -6,6 +8,7 @@ public class MainClass
     public static void main(String[] args) 
     throws FileNotFoundException
     {
+    	// WordChess
         Scanner sc;
         if(args.length != 0) {
             File file = new File(args[0]);
@@ -29,7 +32,7 @@ public class MainClass
         for(int i=0; i<output.length; i++) {
             System.out.println(output[i]);
         }
-
+        
         sc.close();
     }
 }

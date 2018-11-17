@@ -1,4 +1,4 @@
-import java.lang.*;
+package wordchess;
 import java.util.*;
 
 /**
