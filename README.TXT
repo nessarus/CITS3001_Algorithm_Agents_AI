@@ -61,7 +61,8 @@ Compile and run. The program will play a random move player vs MancalaImp.
 CITS3001 Algorithms, Agents and Artificial Intelligence
 ------------------------------------------------------------------------
 Knapsack, Mancala, Wordchess are student projects from the course CITS3001 
-Algorithms, Agents and Artificial Intelligence in the University of Western Australia.
+Algorithms, Agents and Artificial Intelligence in the University of Western 
+Australia.
 
 References: 
 Unit Co-ordinator: Tim French
