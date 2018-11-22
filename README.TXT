@@ -53,8 +53,6 @@ MancalaImp constructs a computer player AI to play the game Mancala.
 It uses minimax and alpha-beta pruning game-playing techniques to search 
 for good moves.
 
-References: http://teaching.csse.uwa.edu.au/units/CITS3001/lectures/lectures/07GamePlaying.pdf
-
 HOW TO START THIS PROJECT:
 Compile and run. The program will play a random move player vs MancalaImp.
 ------------------------------------------------------------------------
